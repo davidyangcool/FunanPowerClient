@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">打卡</h1>
+		</header>
+
+		<div class="mui-content">
+			<div id="tabbar1" class="mui-control-content mui-active">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<span id="name">默认姓名</span>
+							<span id="date" class="mui-pull-right"></span>
+
+						</div>
+					</li>
+				</ul>
+				<div class="mui-content-padded">
+					<h4>上班打卡</h4>
+					<p></p>
+					<h5 id="time1">默认上班时间</h5>
+					<h5 id="add1">默认上班地点</h5>
+
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<h4>下班打卡</h4>
+					<p></p>
+					<h5 id="time2">默认下班时间</h5>
+					<h5 id="add2">默认下班地点</h5>
+				</div>
+
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+
+				<div class="mui-content-padded" style="margin-top: 10px;">
+					<button type="button" id="btn" class="mui-btn mui-btn-primary mui-btn-block">提交</button>
+				</div>
+			</div>
+
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script>
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+		//获取存错的姓名
+		var name = localStorage.getItem("name");
+		var name_html = document.getElementById("name");
+		name_html.innerHTML = name;
+
+		//获取当前的日期 左上角显示出来
+		var d = new Object();
+		d = date_string(d);
+		document.getElementById("date").innerHTML = d.date_str;
+		//获取需要显示的元素
+		var time1 = document.getElementById("time1");
+		var add1 = document.getElementById("add1");
+		var time2 = document.getElementById("time2");
+		var add2 = document.getElementById("add2");
+		//按钮
+		var btn = document.getElementById("btn");
+		//获取格式时间
+		function date_string(d) {
+			d.datetime = new Date();
+			d.year = d.datetime.getFullYear();
+			d.month = d.datetime.getMonth() + 1;
+			d.day = d.datetime.getDate();
+			d.hours = d.datetime.getHours();
+			d.minutes = d.datetime.getMinutes();
+			d.seconds = d.datetime.getSeconds();
+			d.date_str = d.year + "." + d.month + "." + d.day;
+			d.time_str = d.hours + ":" + d.minutes;
+			return d
+		}
+
+		//地理位置
+		function getLocation() {
+			plus.geolocation.getCurrentPosition(function(p) {
+				localStorage.setItem("location", p.addresses);
+				//alert(localStorage.getItem("location"));
+			});
+
+		}
+
+		function uploadData(datas) {
+			mui.ajax({
+				type: 'POST',
+				data: datas,
+				dataType: 'json',
+				url: 'http://58.242.107.76:5000/signUp',
+				success: function(msg) {
+					//console.log(msg);
+					//mui.toast(msg.msg);
+				},
+				error: function(xhr, type, errorThrown) {
+					mui.toast(type);
+				}
+
+			});
+		}
+		//
+		function check_today(comp) {
+			today = new Object();
+			today = date_string(today);
+			if(today.date_str == comp) { //比较存储的日期和今天的日期是否是同一天
+				signal = true;
+				//将已经有的元素显示出来
+				if(localStorage.getItem("time1")){
+					time1.innerHTML=localStorage.getItem("time1");
+				}
+				if (localStorage.getItem("location1")) {
+					add1.innerHTML=localStorage.getItem("location1");
+				}
+				
+				if (localStorage.getItem("time2")) {
+					time2.innerHTML=localStorage.getItem("time2");
+				}
+				if (localStorage.getItem("location2")) {
+					add2.innerHTML=localStorage.getItem("location2");
+				}
+			} else {
+				signal = false;
+				localStorage.setItem("today", today.date_str);
+				localStorage.setItem('count', 0);
+				localStorage.removeItem("time1");
+				localStorage.removeItem("location1");
+				localStorage.removeItem("time2");
+				localStorage.removeItem("location2");
+			}
+			return signal
+		}
+		//
+		if(!localStorage.getItem("today")) {
+			var t = new Object();
+			t = date_string(t);
+			localStorage.setItem("today", t.date_str);
+			localStorage.setItem('count', 0);
+		} else {
+			var compare_date = localStorage.getItem("today")
+		}
+		//
+		check_today(compare_date);
+		
+
+		var dt = new Object();
+		mui.plusReady(function() {
+			//获取当前位置
+			getLocation();
+			btn.addEventListener("tap", function() {
+				var count = localStorage.getItem("count");
+				if(count == 0) {
+					getLocation();
+					localStorage.setItem("location1", localStorage.getItem("location"));
+					dt = date_string(dt);
+					var data = {
+						code:"startwok",
+						location: localStorage.getItem("location")
+					};
+					uploadData(data);
+					time1.innerHTML = dt.time_str;
+					localStorage.setItem("time1",dt.time_str)
+					add1.innerHTML = localStorage.getItem("location1")
+					localStorage.setItem('count', 1);
+					//count = count + 1;
+				} else if(count == 1) {
+					getLocation();
+					localStorage.setItem("location2", localStorage.getItem("location"));
+					dt = date_string(dt);
+					var data = {
+						code:'finish_work',
+						location: localStorage.getItem("location")
+					};
+					uploadData(data);
+					time2.innerHTML = dt.time_str;
+					localStorage.setItem("time2",dt.time_str)
+					add2.innerHTML = localStorage.getItem("location2")
+					//count = count + 1;
+					localStorage.setItem('count', 2)
+				}
+			});
+
+		})
+	</script>
+
+</html>

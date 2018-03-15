@@ -1,0 +1,53 @@
+{
+  "contact.html": {
+    "href": "contact.html",
+    "resources": [],
+    "priority": 0
+  },
+  "notice.html": {
+    "href": "notice.html",
+    "resources": [],
+    "priority": 1
+  },
+  "maps.html": {
+    "href": "maps.html",
+    "resources": [],
+    "priority": 2
+  },
+  "clockIn.html": {
+    "href": "clockIn.html",
+    "resources": [],
+    "priority": 3
+  },
+  "goOut.html": {
+    "href": "goOut.html",
+    "resources": [],
+    "priority": 4
+  },
+  "askForLeave.html": {
+    "href": "askForLeave.html",
+    "resources": [],
+    "priority": 5
+  },
+  "daily.html": {
+    "href": "daily.html",
+    "resources": [],
+    "priority": 6
+  },
+  "monthlyReport.html": {
+    "href": "monthlyReport.html",
+    "resources": [],
+    "priority": 7
+  },
+  "access.html": {
+    "href": "access.html",
+    "resources": [],
+    "priority": 8
+  },
+  "index.html": {
+    "href": "index.html",
+    "resources": [],
+    "refer": [],
+    "priority": 0
+  }
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">打卡</h1>
+		</header>
+
+		<div class="mui-content">
+			<div id="tabbar1" class="mui-control-content mui-active">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<span id="name">默认姓名</span>
+							<span id="date" class="mui-pull-right"></span>
+
+						</div>
+					</li>
+				</ul>
+				<div class="mui-content-padded">
+					<h4>上班打卡</h4>
+					<p></p>
+					<h5 id="time1">默认上班时间</h5>
+					<h5 id="add1">默认上班地点</h5>
+					
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<h4>下班打卡</h4>
+					<p></p>
+					<h5 id="time2">默认下班时间</h5>
+					<h5 id="add2">默认下班地点</h5>
+				</div>
+				
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				
+				<div class="mui-content-padded" style="margin-top: 10px;">
+					<button type="button" id="circle" class="mui-btn mui-btn-primary mui-btn-block">提交</button>
+				</div>
+			</div>
+
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script>
+		/*
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+		//获取存错的姓名
+		var name = localStorage.getItem("name");
+		var name_html = document.getElementById("name");
+		name_html.innerHTML = name;
+
+		//获取当前的日期 左上角显示出来
+		var d = new Object();
+		d = date_string(d);
+		document.getElementById("date").innerHTML = d.date_str;
+
+		//定义日期 计数器  上班时间 上班地点 下班时间 下班地点
+		var today, compare_date, signal, count, start_work_time, start_work_position, finish_work_time, finish_work_position;
+		//检测 今天日期是否已经储存
+		if(!localStorage.getItem("today")) {
+			let t = new Object();
+			t = date_string(t);
+			localStorage.setItem("today", t.date_str)
+		} else {
+			compare_date = localStorage.getItem("today")
+		}
+
+		function check_today(comp) {
+			today = new Object();
+			today = date_string(today);
+			if(today.date_str == comp) { //比较存储的日期和今天的日期是否是同一天
+				signal = true;
+			} else {
+				signal = false;
+				localStorage.setItem("today", today.date_str)
+				localStorage.setItem('count', 0)
+				localStorage.setItem('start_work_time',false)
+				localStorage.setItem('start_work_position', false)
+				localStorage.setItem('finish_work_time', false)
+				localStorage.setItem('finish_work_position', false)
+			}
+			return signal
+		}
+
+		function date_string(d) {
+			d.datetime = new Date();
+			d.year = d.datetime.getFullYear();
+			d.month = d.datetime.getMonth() + 1;
+			d.day = d.datetime.getDate();
+			d.hours = d.datetime.getHours();
+			d.minutes = d.datetime.getMinutes();
+			d.seconds = d.datetime.getSeconds();
+			d.date_str = d.year + "." + d.month + "." + d.day;
+			d.time_str = d.hours + ":" + d.minutes;
+			return d
+		}
+		//获取地点
+		
+		//获取显示的时间
+		/*
+		if(check_today(compare_date)) {
+			if(localStorage.getItem("start_work_time")) {
+				var time1 = document.getElementById("time1");
+				time1.innerHTML = localStorage.getItem("start_work_time");
+			}
+			if(localStorage.getItem("start_work_position")) {
+				var add1 = document.getElementById("add1");
+				add1.innerHTML = localStorage.getItem("start_work_position");
+			}
+			if(localStorage.getItem("finish_work_time")) {
+				var time2 = document.getElementById("time2");
+				time2.innerHTML = localStorage.getItem("finish_work_time");
+			}
+			if(localStorage.getItem("finish_work_position")) {
+				var add2 = document.getElementById("add2");
+				add2.innerHTML = localStorage.getItem("finish_work_position");
+			}
+		}
+
+
+		//获取圆形按钮
+		var circle = document.getElementById("circle");
+		*/
+/*
+		mui.plusReady(function() {
+			circle.addEventListener("tap", function() { //给圆形按钮设置监听函数
+				if(check_today(compare_date) && (localStorage.getItem("count") == 0)) {
+					var current_place;
+					plus.geolocation.getCurrentPosition(function(p) {
+						//alert('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude + '\nAltitude:' + p.coords.altitude);
+						//alert(p.addresses);
+						current_place = p.addresses;
+						//alert(current_place);
+						localStorage.setItem("start_work_position", current_place);
+					add1.innerHTML =localStorage.getItem("start_work_position");
+
+					}, function(e) {
+						alert('Geolocation error: ' + e.message);
+					});
+					let current_datetime = new Object();
+					current_datetime = date_string(current_datetime);
+					localStorage.setItem('start_work_time', current_datetime.time_str);
+					time1.innerHTML = current_datetime.time_str;
+					
+					mui.ajax({
+						type: 'POST',
+						data: {
+							'code': 'start',
+							'username': localStorage.getItem("username"),
+							'name': localStorage.getItem("name"),
+							'start_work_time': current_datetime.datetime,
+							'start_work_position': current_place
+						},
+						dataType: 'json',
+						url: 'http://58.242.107.76:5000/signUp',
+						success: function(data) {
+							//console.log(msg);
+							//mui.toast(msg.msg);
+						},
+						error: function(xhr, type, errorThrown) {
+							mui.toast(type);
+						}
+
+					});
+					localStorage.setItem("count", 1);
+				}
+				if(check_today(compare_date) && (localStorage.getItem("count") == 1)) {
+					let current_place = new Object();
+					plus.geolocation.getCurrentPosition(function(p) {
+						//alert('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude + '\nAltitude:' + p.coords.altitude);
+						//alert(p.addresses);
+						current_place = p;
+
+					}, function(e) {
+						alert('Geolocation error: ' + e.message);
+					});
+					let current_datetime = new Object();
+					current_datetime = date_string(current_datetime);
+					localStorage.setItem('start_work_time', current_datetime.time_str);
+					time1.innerHTML = current_datetime.time_str;
+					localStorage.setItem("start_work_position", current_place.addresses);
+					add1.innerHTML = current_place.addresses;
+					mui.ajax({
+						type: 'POST',
+						data: {
+							'code': 'finish',
+							'username': localStorage.getItem("username"),
+							'name': localStorage.getItem("name"),
+							'finish_work_time': current_datetime.datetime,
+							'finish_work_position': current_place
+						},
+						dataType: 'json',
+						url: 'http://58.242.107.76:5000/signUp',
+						success: function(data) {
+							//console.log(msg);
+							//mui.toast(msg.msg);
+						},
+						error: function(xhr, type, errorThrown) {
+							mui.toast(type);
+						}
+
+					});
+					localStorage.setItem("count", 2);
+				}
+
+			});
+
+		});
+		*/
+	</script>
+
+</html>

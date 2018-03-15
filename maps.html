@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+	<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.3&key=8be570e230c20fc8bf9bd13fece88eaf"></script> 
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">定位</h1>
+			
+		</header>
+	<nav style="z-index: 999;" class="mui-bar mui-bar-tab">
+			<a style="height: 50px;" class="mui-btn mui-btn-primary mui-btn-block" id="position">
+				点击开始记录位置
+			</a>
+	</nav>
+<div class="mui-content">
+	<div id='container'></div>
+</div>
+	<script type="text/javascript">
+document.addEventListener('plusready', onPlusReady, false);
+btn_upload=document.getElementById("position");
+btn_upload.addEventListener("tap",changeFlag);
+var  flag=false;
+var  time=0;
+		//加载地图，调用浏览器定位服务
+var	map = new AMap.Map('container', {
+			resizeEnable: true,
+			 zoom:16,
+    			center: [115.589248,32.637501] 
+		});
+var marker =new AMap.Marker({
+	//position:[115.798842,32.891105],
+	map:map,
+});
+
+	setInterval(function(){
+	if(flag){
+	upload()	;
+	mui.toast("上传位置成功");
+	}
+	}, 30000);
+
+function changeFlag(){
+	time=time+1;
+	time=time%2;
+	if (time==1){
+		flag=true;
+		btn_upload.innerHTML="点击停止记录轨迹";
+	}
+	else{
+		flag=false;
+		btn_upload.innerHTML="点击开始记录轨迹";
+	};
+	mui.toast(flag);
+}
+
+function upload(){
+	//mui.toast('ok')
+	plus.geolocation.getCurrentPosition(function(p){
+		//mui.toast('地理坐标\n维度:' + p.coords.latitude + '\n经度:' + p.coords.longitude + '\n高程:' + p.coords.altitude);
+		lat=p.coords.latitude;
+		lgt=p.coords.longitude;
+		marker.setPosition([lgt,lat]);
+		map.setCenter([lgt,lat]);
+		mui.ajax({
+			type:'POST',
+			data:{
+				'lat':lat,
+				'lgt':lgt,
+				'username':localStorage.getItem("username"),
+				'name':localStorage.getItem("name")
+			},
+			dataType:'json',
+			url:'http://58.242.107.76:5000/trace',
+			success: function(msg){
+				//console.log(msg);
+				//mui.toast(msg.msg);
+			},
+			error:function(xhr,type,errorThrown){
+				mui.toast(type);
+			}
+			
+		});
+		
+	}, function(e){
+		alert('定位失败：请开启GPS定位功能和移动数据流量，然后重新打开应用\nGeolocation error: ' + e.message);
+	} );
+}
+function onPlusReady(){
+	plus.geolocation.getCurrentPosition(function(p){
+		//mui.toast('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude + '\nAltitude:' + p.coords.altitude);
+		lat=p.coords.latitude;
+		lgt=p.coords.longitude;
+		marker.setPosition([lgt,lat]);
+		map.setCenter([lgt,lat]);
+		mui.toast("定位成功");
+	}, function(e){
+		alert('定位失败：请开启GPS定位功能和移动数据流量，然后重新打开应用\nGeolocation error: ' + e.message);
+	} );
+}
+	</script>
+</body>
+</html>

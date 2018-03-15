@@ -1,0 +1,168 @@
+{
+	"index.html": {
+		"refer": [
+			"daily.html",
+			"monthlyReport.html",
+			"access.html",
+			"contact.html",
+			"notice.html",
+			"maps.html",
+			"clockIn.html",
+			"goOut.html",
+			"askForLeave.html",
+			"setting.html",
+			"login.html",
+			"signUp.html"
+		],
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/header.png",
+			"images/kqdk.png",
+			"images/wc.png",
+			"images/qj.png",
+			"images/rb.png",
+			"images/yb.png",
+			"images/znbb.png",
+			"images/bfjl.png",
+			"askForLeave.html"
+		]
+	},
+	"daily.html": {
+		"refer": [
+			"index.html"
+		],
+		"resources": [
+			"css/mui.min.css",
+			"css/feedback.css",
+			"js/mui.min.js",
+			"js/feedback.js",
+			"images/tianjia.png",
+			"index.html"
+		]
+	},
+	"monthlyReport.html": {
+		"refer": [
+			"index.html"
+		],
+		"resources": [
+			"css/mui.min.css",
+			"css/feedback.css",
+			"js/mui.min.js",
+			"js/feedback.js",
+			"images/tianjia.png"
+		]
+	},
+	"access.html": {
+		"refer": [
+			"index.html"
+		],
+		"resources": [
+			"css/mui.min.css",
+			"css/feedback.css",
+			"js/mui.min.js",
+			"js/feedback.js",
+			"images/tianjia.png"
+		]
+	},
+	"contact.html": {
+		"href": "contact.html",
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/60x60.gif"
+		],
+		"refer": [],
+		"priority": 0
+	},
+	"notice.html": {
+		"href": "notice.html",
+		"resources": [
+			"css/mui.min.css",
+			"js/mui.min.js"
+		],
+		"refer": [
+			"info.html"
+		],
+		"priority": 0
+	},
+	"maps.html": {
+		"href": "maps.html",
+		"resources": [
+			"css/mui.min.css",
+			"js/mui.min.js"
+		],
+		"refer": [],
+		"priority": 0
+	},
+	"clockIn.html": {
+		"href": "clockIn.html",
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/logo.png"
+		],
+		"refer": [
+			"index.html"
+		],
+		"priority": 0
+	},
+	"goOut.html": {
+		"href": "goOut.html",
+		"resources": [
+			"css/mui.min.css",
+			"css/feedback.css",
+			"js/mui.min.js",
+			"js/feedback.js",
+			"images/tianjia.png"
+		],
+		"refer": [
+			"index.html"
+		],
+		"priority": 0
+	},
+	"askForLeave.html": {
+		"href": "askForLeave.html",
+		"resources": [
+			"css/mui.min.css",
+			"css/feedback.css",
+			"js/mui.min.js",
+			"js/feedback.js",
+			"images/tianjia.png"
+		],
+		"refer": [
+			"leaveRecord.html",
+			"index.html"
+		],
+		"priority": 0
+	},
+	"login.html": {
+		"refer": [
+			"main.html",
+			"reg.html",
+			"forget_password.html",
+			"index.html"
+		]
+	},
+	"reg.html": {
+		"refer": [
+			"login.html",
+			"index.html"
+		]
+	},
+	"forget_password.html": {
+		"refer": [
+			"login.html"
+		]
+	},
+	"leaveRecord.html": {
+		"refer": [
+			"askForLeave.html"
+		]
+	},
+	"signUp.html": {
+		"refer": [
+			"index.html"
+		]
+	}
+}

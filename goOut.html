@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="feedback">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/feedback.css" />
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.mui-bar .mui-pull-left .mui-icon {
+				padding-right: 5px;
+				font-size: 28px;
+			}
+			.mui-bar .mui-btn {
+				font-weight: normal;
+				font-size: 17px;
+			}
+			.mui-bar .mui-btn-link {
+				top: 1px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">外出</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<div style="margin:10px 0px;">
+					<ul class="mui-table-view">
+		            <li class="mui-table-view-cell">
+		                <a id="startTime" class="mui-navigate-right">
+		                    <span class="mui-badge "><div id="startTimeInfo">请选择</div></span>
+		                    开始时间
+		                </a>
+		            </li>
+		            <li class="mui-table-view-cell">
+		                <a id="endTime" class="mui-navigate-right">
+		                    <span class="mui-badge "><div id="endTimeInfo">请选择</div></span>
+		                    结束时间
+		                </a>
+		            </li>
+		            <div class="mui-input-row">
+						<label>时长(小时)</label>
+						<input type="text" id="length_of_time" class="mui-input-clear" placeholder="请输入时长">
+					</div>
+		        </ul>
+				</div>
+		        
+				<div class="mui-input-row" style="margin: 10px 0px ;">
+						<textarea style="height: 300px;" id="reason" rows="15" placeholder="请输入外出事由"></textarea>
+				</div>
+				<div class="mui-content-padded" style="margin-top: 10px;">
+		        	<button type="button" id="btn" class="mui-btn mui-btn-primary mui-btn-block">提交</button>
+		   		</div>
+			</div>	
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<script src="js/feedback.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui('.mui-scroll-wrapper').scroll();
+			var startTimeInfo = document.getElementById("startTimeInfo"),
+			endTimeInfo = document.getElementById("endTimeInfo");
+			var lenth_of_time=document.getElementById("length_of_time");
+			var reason=document.getElementById("reason");
+			var  start_date,end_date;
+			document.getElementById("startTime").addEventListener('tap', function() {
+				var dDate = new Date();
+				dDate.setFullYear(2018, 0, 1);
+				var minDate = new Date();
+				minDate.setFullYear(2016, 0, 1);
+				var maxDate = new Date();
+				maxDate.setFullYear(2020, 11, 31);
+				plus.nativeUI.pickDate(function(e) {
+					start_date = e.date;
+					startTimeInfo.innerText = '您选择的日期是:' + start_date.getFullYear() + "-" + (start_date.getMonth() + 1) + "-" + start_date.getDate();
+				}, function(e) {
+					startTimeInfo.innerText = "您没有选择日期";
+				}, {
+					title: "请选择日期",
+					date: dDate,
+					minDate: minDate,
+					maxDate: maxDate
+				});
+			});
+			document.getElementById("endTime").addEventListener('tap', function() {
+				var dDate = new Date();
+				dDate.setFullYear(2018, 0, 1);
+				var minDate = new Date();
+				minDate.setFullYear(2016, 0, 1);
+				var maxDate = new Date();
+				maxDate.setFullYear(2020, 11, 31);
+				plus.nativeUI.pickDate(function(e) {
+					end_date = e.date;
+					endTimeInfo.innerText = '您选择的日期是:' + end_date.getFullYear() + "-" + (end_date.getMonth() + 1) + "-" + end_date.getDate();
+				}, function(e) {
+					endTimeInfo.innerText = "您没有选择日期";
+				}, {
+					title: "请选择日期",
+					date: dDate,
+					minDate: minDate,
+					maxDate: maxDate
+				});
+			});
+			var btn=document.getElementById("btn");
+			btn.addEventListener("tap",function(){
+				data={
+					username:localStorage.getItem('username'),
+					name:localStorage.getItem('name'),
+					start_date:start_date,
+					end_date:end_date,
+					lenth_of_time:length_of_time.value,
+					reason:reason.value
+				};
+				uploadData(data);
+				
+			});
+			function uploadData(datas) {
+			mui.ajax({
+				type: 'POST',
+				data: datas,
+				dataType: 'json',
+				url: 'http://58.242.107.76:5000/go_out' ,
+				success: function(msg) {
+					//console.log(msg);
+					//mui.toast(msg.msg);
+				},
+				error: function(xhr, type, errorThrown) {
+					mui.toast(type);
+				}
+
+			});
+		}
+			
+		</script>
+		
+	</body>
+
+</html>
